@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: kubernetes-platform-operator
+  namespace: kubernetes-platform-operator-system
+  labels:
+    app.kubernetes.io/name: kubernetes-platform-operator
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubernetes-platform-operator

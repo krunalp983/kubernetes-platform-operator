@@ -1,0 +1,11 @@
+1. Verify the operator pod is running:
+   kubectl -n {{ .Release.Namespace }} get pods -l app.kubernetes.io/instance={{ .Release.Name }}
+
+2. Check metrics and health probes:
+   kubectl -n {{ .Release.Namespace }} port-forward deploy/{{ include "kubernetes-platform-operator.fullname" . }} 8080:{{ .Values.ports.metrics }} 8081:{{ .Values.ports.probes }}
+
+   Metrics service:
+   kubectl -n {{ .Release.Namespace }} get svc {{ include "kubernetes-platform-operator.fullname" . }}-metrics
+
+3. Apply a sample ApplicationEnvironment resource:
+   kubectl apply -f examples/applicationenvironment-sample.yaml

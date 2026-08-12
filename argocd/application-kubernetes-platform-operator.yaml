@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-platform-operator
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: kubernetes-platform-operator
+  revisionHistoryLimit: 5
+  source:
+    repoURL: https://github.com/<PERSONAL_GITHUB_USERNAME>/<PERSONAL_GITHUB_REPOSITORY>
+    targetRevision: main
+    path: charts/kubernetes-platform-operator
+    helm:
+      releaseName: kubernetes-platform-operator
+      values: |
+        replicaCount: 2
+        leaderElection:
+          enabled: true
+        image:
+          tag: "0.1.0"
+        serviceMonitor:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kubernetes-platform-operator-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true

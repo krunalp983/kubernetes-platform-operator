@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: kubernetes-platform-operator
+  namespace: argocd
+spec:
+  description: GitOps project for the platform operator stack
+  sourceRepos:
+    - https://github.com/<PERSONAL_GITHUB_USERNAME>/<PERSONAL_GITHUB_REPOSITORY>
+  destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: kubernetes-platform-operator-system
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ServiceAccount
+    - group: ""
+      kind: Service
+    - group: ""
+      kind: ConfigMap
+    - group: apps
+      kind: Deployment
+    - group: policy
+      kind: PodDisruptionBudget
+    - group: monitoring.coreos.com
+      kind: ServiceMonitor

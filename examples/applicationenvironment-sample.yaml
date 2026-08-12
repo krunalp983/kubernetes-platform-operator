@@ -1,0 +1,22 @@
+apiVersion: platform.example.com/v1alpha1
+kind: ApplicationEnvironment
+metadata:
+  name: payments-dev
+  namespace: default
+spec:
+  environment: dev
+  replicas: 2
+  image:
+    repository: nginx
+    tag: "1.27.1"
+  service:
+    type: ClusterIP
+    port: 8080
+  config:
+    APP_MODE: production
+    FEATURE_FLAG_X: enabled
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 75

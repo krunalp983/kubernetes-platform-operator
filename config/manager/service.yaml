@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-platform-operator-metrics
+  namespace: kubernetes-platform-operator-system
+  labels:
+    app.kubernetes.io/name: kubernetes-platform-operator
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: kubernetes-platform-operator
+  ports:
+    - name: metrics
+      port: 8080
+      targetPort: metrics
+      protocol: TCP

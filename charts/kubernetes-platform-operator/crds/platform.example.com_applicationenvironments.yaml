@@ -1,0 +1,144 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: applicationenvironments.platform.example.com
+spec:
+  group: platform.example.com
+  names:
+    kind: ApplicationEnvironment
+    listKind: ApplicationEnvironmentList
+    plural: applicationenvironments
+    singular: applicationenvironment
+    shortNames:
+      - appenv
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Environment
+          type: string
+          jsonPath: .spec.environment
+        - name: Image
+          type: string
+          jsonPath: .spec.image.repository
+        - name: Ready
+          type: string
+          jsonPath: .status.conditions[?(@.type=="Ready")].status
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              required:
+                - environment
+                - image
+              properties:
+                environment:
+                  type: string
+                  enum: [dev, staging, prod]
+                replicas:
+                  type: integer
+                  format: int32
+                  minimum: 1
+                  default: 1
+                image:
+                  type: object
+                  required: [repository, tag]
+                  properties:
+                    repository:
+                      type: string
+                      minLength: 1
+                    tag:
+                      type: string
+                      minLength: 1
+                    pullPolicy:
+                      type: string
+                service:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    port:
+                      type: integer
+                      format: int32
+                      minimum: 1
+                      maximum: 65535
+                      default: 8080
+                config:
+                  type: object
+                  additionalProperties:
+                    type: string
+                autoscaling:
+                  type: object
+                  properties:
+                    enabled:
+                      type: boolean
+                    minReplicas:
+                      type: integer
+                      format: int32
+                      minimum: 1
+                    maxReplicas:
+                      type: integer
+                      format: int32
+                      minimum: 1
+                    targetCPUUtilizationPercentage:
+                      type: integer
+                      format: int32
+                      minimum: 1
+                      maximum: 100
+                resources:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+            status:
+              type: object
+              properties:
+                observedGeneration:
+                  type: integer
+                  format: int64
+                readyReplicas:
+                  type: integer
+                  format: int32
+                serviceName:
+                  type: string
+                lastReconciledTime:
+                  type: string
+                  format: date-time
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - type
+                      - status
+                      - lastTransitionTime
+                      - reason
+                      - message
+                    properties:
+                      type:
+                        type: string
+                      status:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      reason:
+                        type: string
+                      message:
+                        type: string
+      subresources:
+        status: {}

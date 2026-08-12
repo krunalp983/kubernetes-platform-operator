@@ -1,0 +1,82 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/<PERSONAL_GITHUB_USERNAME>/<PERSONAL_GITHUB_REPOSITORY>
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+commonLabels: {}
+podLabels: {}
+
+serviceAccount:
+  create: true
+  name: ""
+
+rbac:
+  create: true
+
+podAnnotations: {}
+
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  capabilities:
+    drop:
+      - ALL
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+priorityClassName: ""
+
+topologySpreadConstraints: []
+
+leaderElection:
+  enabled: true
+
+ports:
+  metrics: 8080
+  probes: 8081
+
+metricsService:
+  enabled: true
+  type: ClusterIP
+  annotations: {}
+
+serviceMonitor:
+  enabled: false
+  interval: 30s
+  scrapeTimeout: 10s
+  honorLabels: false
+  labels: {}
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+networkPolicy:
+  enabled: true
+  egressDNS: true
+  egressKubeAPI: true
+  additionalEgress: []

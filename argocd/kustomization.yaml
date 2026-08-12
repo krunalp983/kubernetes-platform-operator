@@ -1,0 +1,5 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - project-kubernetes-platform-operator.yaml
+  - application-kubernetes-platform-operator.yaml
