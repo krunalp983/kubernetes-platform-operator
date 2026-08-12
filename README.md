@@ -1,5 +1,9 @@
 # Platform Operator Showcase
 
+[![CI](https://github.com/krunalp983/kubernetes-platform-operator/actions/workflows/ci.yaml/badge.svg)](https://github.com/krunalp983/kubernetes-platform-operator/actions/workflows/ci.yaml)
+[![Release Image](https://github.com/krunalp983/kubernetes-platform-operator/actions/workflows/release-image.yaml/badge.svg)](https://github.com/krunalp983/kubernetes-platform-operator/actions/workflows/release-image.yaml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 Production-grade Platform Engineering repository implementing a Kubernetes Operator for a custom `ApplicationEnvironment` API, with GitOps deployment, Helm packaging, CI validation, and security scanning.
 
 ## Architecture
@@ -177,3 +181,7 @@ helm rollback kubernetes-platform-operator <REVISION> -n kubernetes-platform-ope
 See `docs/operations.md` for an operational runbook.
 
 See `docs/production-readiness.md` for the final readiness checklist and known risks.
+
+## License
+
+This project is licensed under the MIT License. See `LICENSE`.
